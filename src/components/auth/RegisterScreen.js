@@ -2,14 +2,22 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useForm } from '../../hooks/useForm';
 import validator from 'validator';
+import { setError, removeError } from '../../actions/ui';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const RegisterScreen = () => {
 
+    const dispatch = useDispatch()
+    const {msgError} = useSelector(state => state.ui)
+   
+    console.log(msgError); 
+
+   
     const [formValues, handleInputChange] = useForm({
         name: 'Adrian',
         email: 'adrian@gmail.com',
-        password: '123',
-        password2: '123',
+        password: '1234',
+        password2: '1234',
     })
 
     const { name,
@@ -17,34 +25,45 @@ export const RegisterScreen = () => {
         password,
         password2 } = formValues;
 
-        const handleRegister = (e) => {
-            e.preventDefault();
-             
-            if (isFormValid()){
-               console.log('Form correcto');
-            }
+    const handleRegister = (e) => {
+        e.preventDefault();
 
+        if (isFormValid()) {
+
+           
         }
 
-        const isFormValid = () => { 
-            if (name.trim().length === 0){
-                console.log('Name is required');
-                return false;
-            }else if( !validator.isEmail(email) ){
-                console.log('Email no es valido');
-                return false;
-            }else if (password !== password2 ){
-                console.log('Password no es igual');
-                return false;
-            }
-            return true;
+
+    }
+
+    const isFormValid = () => {
+        if (name.trim().length === 0) {
+         
+            dispatch(setError('Name is required'))
+            return false;
+        } else if (!validator.isEmail(email)) {
+         
+            dispatch(setError('Email no es valido'))
+            return false;
+        } else if (password !== password2 || password.length < 4) {
+           
+            dispatch(setError('Password no es igual'))
+            return false;
         }
+        dispatch(removeError())
+        return true;
+    }
 
     return (
         <>
             <h3 className="auth__title">Register</h3>
 
             <form onSubmit={handleRegister}>
+
+              { msgError &&
+              ( <div className="auth__alert-error">
+                   {msgError}
+                </div>)}
 
                 <input
                     type="text"
