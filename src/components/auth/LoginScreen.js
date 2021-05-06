@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
 import { useForm } from '../../hooks/useForm';
-import { login, startGoogleLogin, startLoginWithFirebase } from '../../actions/auth';
+import {  startGoogleLogin, startLoginWithFirebase } from '../../actions/auth';
 import { removeError, setError } from '../../actions/ui';
 import validator from 'validator';
 

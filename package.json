@@ -16,6 +16,7 @@
     "redux": "^4.1.0",
     "redux-thunk": "^2.3.0",
     "start": "^5.1.0",
+    "sweetalert2": "^10.16.7",
     "validator": "^13.6.0"
   },
   "scripts": {

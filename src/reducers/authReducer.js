@@ -1,12 +1,6 @@
 import { types } from "../types/types";
 
-const initialState  = {
-    uid: 121212,
-    name : 'Adrian Castañeda',
-    dir: {
-        a:12
-    }
-}
+
 
 
 export const authReducer = (state = {}, action) => {

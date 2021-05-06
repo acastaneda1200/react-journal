@@ -1,5 +1,8 @@
+import Swal from 'sweetalert2'
+
+
 import { types } from "../types/types"
-import { firebase, auth, googleAuthProvider } from '../firebase/firebase-config'
+import { firebase, googleAuthProvider } from '../firebase/firebase-config'
 import { finishLoading, starLoading } from "./ui"
 
 export const login = (uid, displayName) => ({
@@ -10,6 +13,11 @@ export const login = (uid, displayName) => ({
     }
 })
 
+const firebaseErrors = {
+    'auth/user-not-found': "Debe ingresar un email valido",
+    'auth/email-already-in-use': 'El email consignado ya se encuentra en uso',
+    'auth/weak-password': "Password al menos 6 caracteres "
+}
 
 
 export const RegisterAccount = (email, password, name) => {
@@ -29,6 +37,12 @@ export const RegisterAccount = (email, password, name) => {
             })
             .catch(e => {
                 console.log(e);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: firebaseErrors[e.code] || e.message
+                  
+                  })
                 dispatch(finishLoading());
             })
     }
@@ -62,6 +76,12 @@ export const startLoginWithFirebase = (email, password) => {
         })
         .catch(e => {
             console.log(e);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: firebaseErrors[e.code] || e.message
+              
+              })
             dispatch(finishLoading());
         })
     }
