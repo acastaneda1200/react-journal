@@ -4,6 +4,7 @@ import { useForm } from '../../hooks/useForm';
 import validator from 'validator';
 import { setError, removeError } from '../../actions/ui';
 import { useDispatch, useSelector } from 'react-redux';
+import { RegisterAccount } from '../../actions/auth';
 
 export const RegisterScreen = () => {
 
@@ -16,8 +17,8 @@ export const RegisterScreen = () => {
     const [formValues, handleInputChange] = useForm({
         name: 'Adrian',
         email: 'adrian@gmail.com',
-        password: '1234',
-        password2: '1234',
+        password: '123456',
+        password2: '123456',
     })
 
     const { name,
@@ -29,8 +30,7 @@ export const RegisterScreen = () => {
         e.preventDefault();
 
         if (isFormValid()) {
-
-           
+           dispatch( RegisterAccount(email, password, name))
         }
 
 
@@ -45,7 +45,7 @@ export const RegisterScreen = () => {
          
             dispatch(setError('Email no es valido'))
             return false;
-        } else if (password !== password2 || password.length < 4) {
+        } else if (password !== password2 || password.length < 6) {
            
             dispatch(setError('Password no es igual'))
             return false;

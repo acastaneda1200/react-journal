@@ -1,32 +1,67 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
 import { useForm } from '../../hooks/useForm';
-import { login, startGoogleLogin } from '../../actions/auth';
+import { login, startGoogleLogin, startLoginWithFirebase } from '../../actions/auth';
+import { removeError, setError } from '../../actions/ui';
+import validator from 'validator';
 
 export const LoginScreen = () => {
 
     
     const dispatch = useDispatch()
+    const {loading, msgError} = useSelector(state => state.ui)
+    
+   
+
     const [formValues, handleInputChange] = useForm({
         email:'adrian@gmail.com',
-        password: '123',
+        password: '123456',
     })
 
     const {email, password} = formValues;
+    
 
     const handleLogin = (e) => {
         e.preventDefault()
-        dispatch(login(email, password))
+        if (isFormValid()) {
+            dispatch(startLoginWithFirebase(email, password))
+        }
     }
     const handleGoogleLogin = () => {
-        dispatch(startGoogleLogin());
+        
+            dispatch(startGoogleLogin());
+       
     }
+
+    const isFormValid = () => {
+        if (email.trim().length === 0) {
+         
+            dispatch(setError('Email es requerido'))
+            return false;
+        }else if (!validator.isEmail(email)) {
+            dispatch(setError('Email invalido'))
+            return false;
+        }else if (password.length < 6){
+            dispatch(setError('Password mayor a 6 digitos'))
+            return false;
+        }
+
+        dispatch(removeError())
+        return true;
+    }
+
     return (
         <>
             <h3 className="auth__title">Login</h3>
 
             <form onSubmit={handleLogin}>
+
+                
+              { msgError &&
+              ( <div className="auth__alert-error">
+                   {msgError}
+                </div>)}
 
                 <input 
                     type="text"
@@ -51,7 +86,7 @@ export const LoginScreen = () => {
                 <button
                     type="submit"
                     className="btn btn-primary btn-block"
-                    
+                    disabled={loading}
                 >
                     Login
                 </button>
