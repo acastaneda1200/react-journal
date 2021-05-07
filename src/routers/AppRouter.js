@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import {
     BrowserRouter as Router,
     Switch,
-    Route,
     Redirect
 } from 'react-router-dom';
 import { firebase } from '../firebase/firebase-config'
@@ -24,7 +23,7 @@ export const AppRouter = () => {
     useEffect(() => {
         firebase.auth().onAuthStateChanged((user) => {
             if (user?.uid) {
-                dispatch(login(user.uid, user.displayName))
+                dispatch(login(user.uid, user.displayName, user.photoURL))
                 setIsLogged(true)
             }else{
                 setIsLogged(false)

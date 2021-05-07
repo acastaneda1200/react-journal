@@ -2,14 +2,15 @@ import Swal from 'sweetalert2'
 
 
 import { types } from "../types/types"
-import { firebase, googleAuthProvider } from '../firebase/firebase-config'
+import { firebase, googleAuthProvider,  facebookAuthProvider } from '../firebase/firebase-config'
 import { finishLoading, starLoading } from "./ui"
 
-export const login = (uid, displayName) => ({
+export const login = (uid, displayName, photoURL) => ({
     type: types.login,
     payload: {
         uid,
         displayName,
+        photoURL
     }
 })
 
@@ -55,9 +56,27 @@ export const startGoogleLogin = () => {
 
         firebase.auth().signInWithPopup(googleAuthProvider)
             .then(({ user }) => {
+              
                 dispatch(
                     login(user.uid,
-                        user.displayName)
+                        user.displayName,
+                        user.photoURL
+                        )
+                )
+            })
+    }
+}
+
+export const startFacebookLogin = () => {
+    return (dispatch) => {
+
+        firebase.auth().signInWithPopup(facebookAuthProvider)
+            .then(({ user }) => {
+                dispatch(
+                    login(user.uid,
+                        user.displayName,
+                        user.photoURL
+                        )
                 )
             })
     }
@@ -70,7 +89,9 @@ export const startLoginWithFirebase = (email, password) => {
         .then(({user}) => {
           dispatch(
             login(user.uid,
-                user.displayName)
+                user.displayName,
+                user.photoURL
+                )
           )
           dispatch(finishLoading());
         })
@@ -99,3 +120,5 @@ export const startLogout = () => {
 export const logout = () => ({
     type: types.logout
 })
+
+

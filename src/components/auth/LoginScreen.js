@@ -2,25 +2,41 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
 import { useForm } from '../../hooks/useForm';
-import {  startGoogleLogin, startLoginWithFirebase } from '../../actions/auth';
+import { startGoogleLogin, startLoginWithFirebase } from '../../actions/auth';
 import { removeError, setError } from '../../actions/ui';
 import validator from 'validator';
+import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
+import firebase from "firebase"
 
 export const LoginScreen = () => {
 
     
+
+    const uiConfig = {
+        signInFlow: "popup",
+        signInOptions: [
+          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+          firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+         
+          firebase.auth.GithubAuthProvider.PROVIDER_ID,
+          
+        ],
+        callbacks: {
+          signInSuccess: () => false
+        }
+      }
+
     const dispatch = useDispatch()
-    const {loading, msgError} = useSelector(state => state.ui)
-    
-   
+    const { loading, msgError } = useSelector(state => state.ui)
+
 
     const [formValues, handleInputChange] = useForm({
-        email:'adrian@gmail.com',
+        email: 'adrian@gmail.com',
         password: '123456',
     })
 
-    const {email, password} = formValues;
-    
+    const { email, password } = formValues;
+
 
     const handleLogin = (e) => {
         e.preventDefault()
@@ -29,20 +45,24 @@ export const LoginScreen = () => {
         }
     }
     const handleGoogleLogin = () => {
-        
-            dispatch(startGoogleLogin());
-       
+
+        dispatch(startGoogleLogin());
+
     }
+
+    // const handleFacebookLogin = () => {
+    //     dispatch(startFacebookLogin());
+    // }
 
     const isFormValid = () => {
         if (email.trim().length === 0) {
-         
+
             dispatch(setError('Email es requerido'))
             return false;
-        }else if (!validator.isEmail(email)) {
+        } else if (!validator.isEmail(email)) {
             dispatch(setError('Email invalido'))
             return false;
-        }else if (password.length < 6){
+        } else if (password.length < 6) {
             dispatch(setError('Password mayor a 6 digitos'))
             return false;
         }
@@ -57,13 +77,13 @@ export const LoginScreen = () => {
 
             <form onSubmit={handleLogin}>
 
-                
-              { msgError &&
-              ( <div className="auth__alert-error">
-                   {msgError}
-                </div>)}
 
-                <input 
+                {msgError &&
+                    (<div className="auth__alert-error">
+                        {msgError}
+                    </div>)}
+
+                <input
                     type="text"
                     placeholder="Email"
                     name="email"
@@ -73,7 +93,7 @@ export const LoginScreen = () => {
                     onChange={handleInputChange}
                 />
 
-                <input 
+                <input
                     type="password"
                     placeholder="Password"
                     name="password"
@@ -91,11 +111,11 @@ export const LoginScreen = () => {
                     Login
                 </button>
 
-                
+
                 <div className="auth__social-networks">
                     <p>Login with social networks</p>
 
-                    <div 
+                    <div
                         className="google-btn"
                         onClick={handleGoogleLogin}
                     >
@@ -106,16 +126,22 @@ export const LoginScreen = () => {
                             <b>Sign in with google</b>
                         </p>
                     </div>
+                    <StyledFirebaseAuth
+                     className="loginExternalWrapper"
+            uiConfig={uiConfig}
+            firebaseAuth={firebase.auth()}
+          />
                 </div>
 
-                <Link 
+                <Link
                     to="/auth/register"
                     className="link"
                 >
-                    Create new account    
+                    Create new account
                 </Link>
 
             </form>
+
         </>
     )
 }

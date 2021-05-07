@@ -69,3 +69,44 @@
     left: 50%;
    
 }
+
+$hideTextSize: 0;
+$showTextSize: 14px;
+
+.loginExternalWrapper {
+  :global(.firebaseui-idp-facebook){
+    :global(.firebaseui-idp-text-long) {
+      font-size: $hideTextSize;
+      &:after {
+        font-size: $showTextSize;
+        content: "Ingresar con Facebook";
+      }
+    }
+
+    :global(.firebaseui-idp-text-short) {
+      font-size: $hideTextSize;
+      &:after {
+        font-size: $showTextSize;
+        content: "Facebook";
+      }
+    }
+  }
+
+  :global(.firebaseui-idp-google){
+    :global(.firebaseui-idp-text-long) {
+      font-size: $hideTextSize;
+      &:after {
+        font-size: $showTextSize;
+        content: "Ingresar con Google";
+      }
+    }
+
+    :global(.firebaseui-idp-text-short) {
+      font-size: $hideTextSize;
+      &:after {
+        font-size: $showTextSize;
+        content: "Google";
+      }
+    }
+  }
+}

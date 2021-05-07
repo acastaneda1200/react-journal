@@ -1,6 +1,8 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/auth'
+const firebaseui = require('firebaseui');
+
 
 
 const firebaseConfig = {
@@ -16,10 +18,15 @@ firebase.initializeApp(firebaseConfig);
 
 const db = firebase.firestore();
 const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
+const facebookAuthProvider = new firebase.auth.FacebookAuthProvider()
+const ui = new firebaseui.auth.AuthUI(firebase.auth());
+
 
 export {
     db,
     googleAuthProvider,
-    firebase
+    firebase,
+    facebookAuthProvider,
+    ui,
 
 }
