@@ -1,10 +1,11 @@
 import { db } from "../firebase/firebase-config";
+import { loadNotes } from "../helpers/loadNotes";
 import { types } from "../types/types";
 
 export const startNewNote = () => {
     return async (dispatch, getState) => {
         const { uid } = getState().auth;
-        console.log(uid);
+
 
 
         const newNote = {
@@ -14,7 +15,7 @@ export const startNewNote = () => {
         }
 
         const doc = await db.collection(`${uid}/journal/notes`).add(newNote);
-       
+
         dispatch(activeNote(doc.id, newNote))
 
     }
@@ -27,4 +28,16 @@ export const activeNote = (id, note) => ({
         ...note
     }
 
+})
+
+export const startLoadingNotes = (uid) => {
+    return async(dispatch) => {
+        const notes = await loadNotes(uid);
+        dispatch( setNotes(notes) );
+    }
+}
+
+export const setNotes = (notes) => ({
+    type: types.notesLoad,
+    payload: notes
 })

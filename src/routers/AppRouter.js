@@ -12,6 +12,8 @@ import { login } from '../actions/auth';
 import { useState } from 'react';
 import { PrivateRoute } from './PrivateRoute';
 import { PublicRoute } from './PublicRoute';
+import { startLoadingNotes } from '../actions/notes'
+
 
 export const AppRouter = () => {
 
@@ -25,6 +27,7 @@ export const AppRouter = () => {
             if (user?.uid) {
                 dispatch(login(user.uid, user.displayName, user.photoURL))
                 setIsLogged(true)
+                dispatch(startLoadingNotes(user.uid));
             }else{
                 setIsLogged(false)
             }

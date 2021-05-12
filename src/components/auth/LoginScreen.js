@@ -8,6 +8,8 @@ import validator from 'validator';
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
 import firebase from "firebase"
 
+
+
 export const LoginScreen = () => {
 
     
@@ -22,7 +24,7 @@ export const LoginScreen = () => {
           
         ],
         callbacks: {
-          signInSuccess: () => false
+            signInSuccessWithAuthResult : () => false
         }
       }
 
@@ -128,6 +130,7 @@ export const LoginScreen = () => {
                     </div>
                     <StyledFirebaseAuth
                      className="loginExternalWrapper"
+                  
             uiConfig={uiConfig}
             firebaseAuth={firebase.auth()}
           />
