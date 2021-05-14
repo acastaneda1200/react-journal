@@ -8,7 +8,6 @@ export const JournalEntries = () => {
   
     return (
         <div className="journal__entries">
-            
             {
                 notes.map( note => (
                     <JournalEntry key={ note.id }
